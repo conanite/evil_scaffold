@@ -66,8 +66,9 @@ ACTION
         def index
           filter_for_index
           respond_to do |format|
-            format.xls { index_xls }
-            format.pdf { index_pdf }
+            format.json { index_json }
+            format.xls  { index_xls  }
+            format.pdf  { index_pdf  }
             format.html { index_html }
           end
         end
