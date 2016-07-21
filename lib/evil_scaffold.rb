@@ -29,7 +29,7 @@ module EvilScaffold
     models_name = options[:models_name] || model_name.pluralize
 
     IndexAction.define_index(self, names[:no_filter], options[:ordering_scope], models_name, model_class_name) if names[:index]
-    IndexJson.define_index_json(self, models_name) if names[:index_json]
+    IndexJson.define_index_json(self, model_name, models_name) if names[:index_json]
     NewAction.define_new(self, model_name) if names[:new]
     CreateAction.define_create(self, model_name, model_class_name) if names[:create]
     ShowAction.define_show(self, model_name) if names[:show]
