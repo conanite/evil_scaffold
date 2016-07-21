@@ -1,5 +1,5 @@
 module EvilScaffold
-  module IndexJsonMethod
+  module IndexJson
     def self.define_index_json kls, model_name, models_name
       index_json = "#{model_name}_to_json"
       kls.class_eval <<INDEX_JSON
