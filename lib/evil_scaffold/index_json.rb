@@ -1,11 +1,15 @@
 module EvilScaffold
   module IndexJson
     def self.define_index_json kls, model_name, models_name
-      index_json = "#{model_name}_to_json"
-      kls.class_eval <<INDEX_JSON
+      item_to_json = "#{model_name}_to_json"
+      code = <<INDEX_JSON
         protected
 
-        def #{index_json} item
+        def #{item_to_json} item
+          { id: item.id, text: item.name }
+        end
+
+        def index_json
           per_page = isset(:per_page) ? params[:per_page].to_i : 20
           page     = isset(:page)     ? params[:page].to_i     : 1
           @#{models_name}  = @#{models_name}.paginate page: page, per_page: per_page
@@ -16,6 +20,7 @@ module EvilScaffold
           render json: json
         end
 INDEX_JSON
+      kls.class_eval code
     end
   end
 end
