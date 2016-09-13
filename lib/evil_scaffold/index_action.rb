@@ -19,7 +19,7 @@ module EvilScaffold
   end
 
   module IndexAction
-    def self.install kls, names, no_filter, ordering_scope, models_name, model_class_name
+    def self.install kls, names, ordering_scope, models_name, model_class_name, options
       if ordering_scope
         ordinal_clause =  <<ORDINAL
           @#{models_name} = @#{models_name}.#{ordering_scope}
@@ -28,7 +28,7 @@ ORDINAL
         ordinal_clause =  ""
       end
 
-      if no_filter
+      if options[:no_filter]
         filter_invocation = "@#{models_name} = #{model_class_name}.all"
       else
         filter_invocation = "@#{models_name} = filter_#{models_name}(#{model_class_name}.all)"
