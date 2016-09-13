@@ -28,7 +28,7 @@ module EvilScaffold
     model_name = options[:model_name]
     models_name = options[:models_name] || model_name.pluralize
 
-    IndexAction              .install(self, names, options[:ordering_scope], models_name, model_class_name, options) if names[:index]
+    IndexAction              .install(self, names, models_name, model_class_name, options) if names[:index]
     IndexJson                .install(self, names, model_name, models_name) if names[:index_json]
     NewAction                .install(self, names, model_name) if names[:new]
     CreateAction             .install(self, names, model_name, model_class_name) if names[:create]

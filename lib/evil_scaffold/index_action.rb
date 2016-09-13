@@ -19,7 +19,8 @@ module EvilScaffold
   end
 
   module IndexAction
-    def self.install kls, names, ordering_scope, models_name, model_class_name, options
+    def self.install kls, names, models_name, model_class_name, options
+      ordering_scope = options[:ordering_scope]
       if ordering_scope
         ordinal_clause =  <<ORDINAL
           @#{models_name} = @#{models_name}.#{ordering_scope}
