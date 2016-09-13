@@ -1,6 +1,6 @@
 module EvilScaffold
   module DestroyAction
-    def self.define_destroy kls, model_name, path_to_avoid_after_delete
+    def self.install kls, model_name, path_to_avoid_after_delete
       avoidance_clause = <<AVOIDANCE
         wrong_url = #{path_to_avoid_after_delete}_path(@#{model_name})
         if params[:return_to] == wrong_url

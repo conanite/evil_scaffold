@@ -1,6 +1,6 @@
 module EvilScaffold
   module DeleteAction
-    def self.define_delete kls
+    def self.install kls
       kls.class_eval <<ACTION, __FILE__, __LINE__
         def delete
           render layout: !request.xhr?

@@ -1,6 +1,6 @@
 module EvilScaffold
   module IndexJson
-    def self.define_index_json kls, model_name, models_name
+    def self.install kls, model_name, models_name
       item_to_json = "#{model_name}_to_json"
       code = <<INDEX_JSON
         protected

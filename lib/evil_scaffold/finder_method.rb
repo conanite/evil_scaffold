@@ -1,6 +1,6 @@
 module EvilScaffold
   module FinderMethod
-    def self.define_finder kls, model_name, model_class_name, finder_filter_actions
+    def self.install kls, model_name, model_class_name, finder_filter_actions
       finder = "find_#{model_name}"
       kls.class_eval <<FILTER
         protected
