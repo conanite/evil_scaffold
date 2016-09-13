@@ -1,6 +1,6 @@
 module EvilScaffold
   module UpdateAction
-    def self.install kls, model_name
+    def self.install kls, names, model_name
       kls.class_eval <<ACTION, __FILE__, (__LINE__ + 1)
         def ajax_after_update
           render "ajax_update", layout: false

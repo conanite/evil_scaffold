@@ -1,6 +1,6 @@
 module EvilScaffold
   module ShowAction
-    def self.install kls, model_name
+    def self.install kls, names, model_name
       kls.class_eval "def show_html; render layout: !request.xhr?; end", __FILE__, __LINE__
       kls.class_eval "def show_xls; end", __FILE__, __LINE__
       kls.class_eval "def show_vcf; end", __FILE__, __LINE__

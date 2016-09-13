@@ -28,17 +28,17 @@ module EvilScaffold
     model_name = options[:model_name]
     models_name = options[:models_name] || model_name.pluralize
 
-    IndexAction              .install(self, names[:no_filter], options[:ordering_scope], models_name, model_class_name) if names[:index]
-    IndexJson                .install(self, model_name, models_name) if names[:index_json]
-    NewAction                .install(self, model_name) if names[:new]
-    CreateAction             .install(self, model_name, model_class_name) if names[:create]
-    ShowAction               .install(self, model_name) if names[:show]
-    EditAction               .install(self) if names[:edit]
-    UpdateAction             .install(self, model_name) if names[:update]
-    DeleteAction             .install(self) if names[:delete]
-    DestroyAction            .install(self, model_name, options[:path_to_avoid_after_delete]) if names[:destroy]
-    GotoShowMethod           .install(self, model_name) if names[:goto_show]
-    ReturnAppropriatelyMethod.install self, model_name
-    FinderMethod             .install(self, model_name, model_class_name, options[:finder_filter_actions]) if names[:finder]
+    IndexAction              .install(self, names, names[:no_filter], options[:ordering_scope], models_name, model_class_name) if names[:index]
+    IndexJson                .install(self, names, model_name, models_name) if names[:index_json]
+    NewAction                .install(self, names, model_name) if names[:new]
+    CreateAction             .install(self, names, model_name, model_class_name) if names[:create]
+    ShowAction               .install(self, names, model_name) if names[:show]
+    EditAction               .install(self, names) if names[:edit]
+    UpdateAction             .install(self, names, model_name) if names[:update]
+    DeleteAction             .install(self, names) if names[:delete]
+    DestroyAction            .install(self, names, model_name, options[:path_to_avoid_after_delete]) if names[:destroy]
+    GotoShowMethod           .install(self, names, model_name) if names[:goto_show]
+    ReturnAppropriatelyMethod.install self, names, model_name
+    FinderMethod             .install(self, names, model_name, model_class_name, options[:finder_filter_actions]) if names[:finder]
   end
 end

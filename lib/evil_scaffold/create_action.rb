@@ -1,6 +1,6 @@
 module EvilScaffold
   module CreateAction
-    def self.install kls, model_name, model_class_name
+    def self.install kls, names, model_name, model_class_name
         kls.class_eval <<ACTION, __FILE__, __LINE__
           def create_validation_failure thing
             raise(ActiveRecord::RecordInvalid.new(thing))
