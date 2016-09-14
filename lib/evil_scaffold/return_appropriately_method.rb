@@ -1,5 +1,5 @@
 module EvilScaffold
-  module ReturnAppropriatelyMethod
+  ReturnAppropriatelyMethod = EvilScaffold.add_generator do
     def self.install config
       config.install <<MAYBE_BACK, __FILE__, __LINE__
         def return_appropriately

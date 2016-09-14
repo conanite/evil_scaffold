@@ -1,5 +1,5 @@
 module EvilScaffold
-  module IndexJson
+  IndexJson = EvilScaffold.add_generator do
     def self.install config
       return unless config.for? :index_json
       item_to_json = "#{config.model_name}_to_json"

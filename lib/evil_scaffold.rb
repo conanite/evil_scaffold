@@ -1,17 +1,17 @@
 require "evil_scaffold/version"
-require 'evil_scaffold/create_action'
-require 'evil_scaffold/delete_action'
-require 'evil_scaffold/destroy_action'
-require 'evil_scaffold/edit_action'
-require 'evil_scaffold/finder_method'
-require 'evil_scaffold/goto_show_method'
+require 'evil_scaffold/plugin'
 require 'evil_scaffold/index_action'
 require 'evil_scaffold/index_json'
 require 'evil_scaffold/new_action'
-require 'evil_scaffold/return_appropriately_method'
+require 'evil_scaffold/create_action'
 require 'evil_scaffold/show_action'
+require 'evil_scaffold/edit_action'
 require 'evil_scaffold/update_action'
-require 'evil_scaffold/version'
+require 'evil_scaffold/delete_action'
+require 'evil_scaffold/destroy_action'
+require 'evil_scaffold/goto_show_method'
+require 'evil_scaffold/return_appropriately_method'
+require 'evil_scaffold/finder_method'
 
 module EvilScaffold
   class Configuration
@@ -39,17 +39,8 @@ module EvilScaffold
     yield config if block_given?
     config.models_name    ||= config.model_name.pluralize
 
-    IndexAction              .install(config)
-    IndexJson                .install(config)
-    NewAction                .install(config)
-    CreateAction             .install(config)
-    ShowAction               .install(config)
-    EditAction               .install(config)
-    UpdateAction             .install(config)
-    DeleteAction             .install(config)
-    DestroyAction            .install(config)
-    GotoShowMethod           .install(config)
-    ReturnAppropriatelyMethod.install(config)
-    FinderMethod             .install(config)
+    GENERATORS.each do |gen|
+      gen.install config
+    end
   end
 end

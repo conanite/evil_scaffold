@@ -1,5 +1,5 @@
 module EvilScaffold
-  module ShowAction
+  ShowAction = EvilScaffold.add_generator do
     def self.install config
       return unless config.for? :show
       config.install "def show_html; render layout: !request.xhr?; end", __FILE__, __LINE__

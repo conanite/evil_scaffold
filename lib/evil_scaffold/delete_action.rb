@@ -1,5 +1,5 @@
 module EvilScaffold
-  module DeleteAction
+  DeleteAction = EvilScaffold.add_generator do
     def self.install config
       return unless config.for? :delete
 

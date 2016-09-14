@@ -1,5 +1,5 @@
 module EvilScaffold
-  module DestroyAction
+  DestroyAction = EvilScaffold.add_generator do
     def self.install config
       return unless config.for? :destroy
 

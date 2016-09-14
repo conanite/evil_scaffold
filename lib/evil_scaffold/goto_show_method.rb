@@ -1,5 +1,5 @@
 module EvilScaffold
-  module GotoShowMethod
+  GotoShowMethod = EvilScaffold.add_generator do
     def self.install config
       return unless config.for? :goto_show
 
