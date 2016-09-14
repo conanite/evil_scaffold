@@ -1,5 +1,13 @@
 module EvilScaffold
+  class Configuration
+    attr_accessor :finder_filter_actions
+  end
+
   FinderMethod = EvilScaffold.add_generator do
+    def self.prepare config
+      config.finder_filter_actions = %i{ show edit update delete destroy }
+    end
+
     def self.install config
       return unless config.for? :finder
 

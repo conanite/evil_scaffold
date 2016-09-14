@@ -15,7 +15,7 @@ require 'evil_scaffold/finder_method'
 
 module EvilScaffold
   class Configuration
-    attr_accessor :klass, :names, :model_name, :models_name, :model_class_name, :finder_filter_actions, :path_to_avoid_after_delete
+    attr_accessor :klass, :names, :model_name, :models_name, :model_class_name, :path_to_avoid_after_delete
     attr_accessor :no_filter, :ordering_scope
 
     def for? name
@@ -34,13 +34,12 @@ module EvilScaffold
     config.model_class_name = target_model.name
     config.model_name       = config.model_class_name.underscore
     show_path               = name.underscore.sub(/_controller$/, '').gsub("/", "_").singularize
-    config.finder_filter_actions = %i{ show edit update delete destroy }
+    GENERATORS.each { |gen| gen.prepare config }
+
     config.path_to_avoid_after_delete = show_path
     yield config if block_given?
     config.models_name    ||= config.model_name.pluralize
 
-    GENERATORS.each do |gen|
-      gen.install config
-    end
+    GENERATORS.each { |gen| gen.install config }
   end
 end

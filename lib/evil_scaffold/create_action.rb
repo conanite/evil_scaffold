@@ -1,5 +1,7 @@
 module EvilScaffold
   CreateAction = EvilScaffold.add_generator do
+    def self.prepare config ; end
+
     def self.install config
       return unless config.for? :create
       config.install <<ACTION, __FILE__, __LINE__
