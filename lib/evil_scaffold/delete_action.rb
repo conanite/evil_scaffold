@@ -1,7 +1,9 @@
 module EvilScaffold
   module DeleteAction
-    def self.install kls, names
-      kls.class_eval <<ACTION, __FILE__, __LINE__
+    def self.install config
+      return unless config.for? :delete
+
+      config.install <<ACTION, __FILE__, __LINE__
         def delete
           render layout: !request.xhr?
         end

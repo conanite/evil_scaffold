@@ -14,31 +14,42 @@ require 'evil_scaffold/update_action'
 require 'evil_scaffold/version'
 
 module EvilScaffold
-  def acts_as_evil target_model, *action_names
-    names = action_names.inject({ }) { |hsh, name| hsh[name.to_sym] = true; hsh }
-    model_class_name = target_model.name
-    model_name = model_class_name.underscore
-    show_path = name.underscore.sub(/_controller$/, '').gsub("/", "_").singularize
-    options = {
-      finder_filter_actions: [:show, :edit, :update, :delete, :destroy],
-      model_name: model_name,
-      path_to_avoid_after_delete: show_path
-    }
-    yield options if block_given?
-    model_name = options[:model_name]
-    models_name = options[:models_name] || model_name.pluralize
+  class Configuration
+    attr_accessor :klass, :names, :model_name, :models_name, :model_class_name, :finder_filter_actions, :path_to_avoid_after_delete
+    attr_accessor :no_filter, :ordering_scope
 
-    IndexAction              .install(self, names, models_name, model_class_name, options) if names[:index]
-    IndexJson                .install(self, names, model_name, models_name) if names[:index_json]
-    NewAction                .install(self, names, model_name) if names[:new]
-    CreateAction             .install(self, names, model_name, model_class_name) if names[:create]
-    ShowAction               .install(self, names, model_name) if names[:show]
-    EditAction               .install(self, names) if names[:edit]
-    UpdateAction             .install(self, names, model_name) if names[:update]
-    DeleteAction             .install(self, names) if names[:delete]
-    DestroyAction            .install(self, names, model_name, options[:path_to_avoid_after_delete]) if names[:destroy]
-    GotoShowMethod           .install(self, names, model_name) if names[:goto_show]
-    ReturnAppropriatelyMethod.install self, names, model_name
-    FinderMethod             .install(self, names, model_name, model_class_name, options[:finder_filter_actions]) if names[:finder]
+    def for? name
+      names.include? name
+    end
+
+    def install code, file, line
+      klass.class_eval code, file, line
+    end
+  end
+
+  def acts_as_evil target_model, *action_names
+    config                  = Configuration.new
+    config.klass            = self
+    config.names            = Set.new action_names
+    config.model_class_name = target_model.name
+    config.model_name       = config.model_class_name.underscore
+    show_path               = name.underscore.sub(/_controller$/, '').gsub("/", "_").singularize
+    config.finder_filter_actions = %i{ show edit update delete destroy }
+    config.path_to_avoid_after_delete = show_path
+    yield config if block_given?
+    config.models_name    ||= config.model_name.pluralize
+
+    IndexAction              .install(config)
+    IndexJson                .install(config)
+    NewAction                .install(config)
+    CreateAction             .install(config)
+    ShowAction               .install(config)
+    EditAction               .install(config)
+    UpdateAction             .install(config)
+    DeleteAction             .install(config)
+    DestroyAction            .install(config)
+    GotoShowMethod           .install(config)
+    ReturnAppropriatelyMethod.install(config)
+    FinderMethod             .install(config)
   end
 end

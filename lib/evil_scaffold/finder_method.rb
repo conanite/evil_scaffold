@@ -1,19 +1,21 @@
 module EvilScaffold
   module FinderMethod
-    def self.install kls, names, model_name, model_class_name, finder_filter_actions
-      finder = "find_#{model_name}"
-      kls.class_eval <<FILTER
+    def self.install config
+      return unless config.for? :finder
+
+      finder = "find_#{config.model_name}"
+      config.install <<FILTER, __FILE__, __LINE__
         protected
 
         def after_#{finder}; end
 
         def #{finder}
-          @#{model_name} = #{model_class_name}.find params[:id]
+          @#{config.model_name} = #{config.model_class_name}.find params[:id]
           after_#{finder}
         end
-FILTER
 
-      kls.before_filter finder.to_sym, only: finder_filter_actions
+        before_filter :#{finder}, only: #{config.finder_filter_actions.inspect}
+FILTER
     end
   end
 end

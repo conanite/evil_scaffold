@@ -1,8 +1,10 @@
 module EvilScaffold
   module DestroyAction
-    def self.install kls, names, model_name, path_to_avoid_after_delete
+    def self.install config
+      return unless config.for? :destroy
+
       avoidance_clause = <<AVOIDANCE
-        wrong_url = #{path_to_avoid_after_delete}_path(@#{model_name})
+        wrong_url = #{config.path_to_avoid_after_delete}_path(@#{config.model_name})
         if params[:return_to] == wrong_url
           redirect_to action: :index
         else
@@ -10,19 +12,19 @@ module EvilScaffold
         end
 AVOIDANCE
 
-      back_instruction = if path_to_avoid_after_delete.present?
+      back_instruction = if config.path_to_avoid_after_delete.present?
         avoidance_clause
       else
         "back"
       end
 
-      kls.class_eval <<ACTION, __FILE__, __LINE__
+      config.install <<ACTION, __FILE__, __LINE__
         def ajax_after_destroy
           render "ajax_destroy", layout: false
         end
 
         def destroy
-          @#{model_name}.destroy
+          @#{config.model_name}.destroy
           if request.xhr?
             ajax_after_destroy
           else

@@ -19,41 +19,42 @@ module EvilScaffold
   end
 
   module IndexAction
-    def self.install kls, names, models_name, model_class_name, options
-      ordering_scope = options[:ordering_scope]
-      if ordering_scope
+    def self.install config
+      return unless config.for? :index
+
+      if config.ordering_scope
         ordinal_clause =  <<ORDINAL
-          @#{models_name} = @#{models_name}.#{ordering_scope}
+          @#{config.models_name} = @#{config.models_name}.#{config.ordering_scope}
 ORDINAL
       else
         ordinal_clause =  ""
       end
 
-      if options[:no_filter]
-        filter_invocation = "@#{models_name} = #{model_class_name}.all"
+      if config.no_filter
+        filter_invocation = "@#{config.models_name} = #{config.model_class_name}.all"
       else
-        filter_invocation = "@#{models_name} = filter_#{models_name}(#{model_class_name}.all)"
-        kls.class_eval <<ACTION, __FILE__, __LINE__
-          def filter_#{models_name} items
+        filter_invocation = "@#{config.models_name} = filter_#{config.models_name}(#{config.model_class_name}.all)"
+        config.install <<ACTION, __FILE__, __LINE__
+          def filter_#{config.models_name} items
             items
           end
-          protected :filter_#{models_name}
+          protected :filter_#{config.models_name}
 ACTION
       end
 
-      kls.class_eval <<ACTION, __FILE__, __LINE__
+      config.install <<ACTION, __FILE__, __LINE__
         include EvilScaffold::IndexActionHelpers
 
         def index_html
-          @#{models_name}_count = @#{models_name}.size
-          return if !request.xhr? && (@#{models_name}_count == 1) && (handle_unique_result(@#{models_name}.first))
+          @#{config.models_name}_count = @#{config.models_name}.size
+          return if !request.xhr? && (@#{config.models_name}_count == 1) && (handle_unique_result(@#{config.models_name}.first))
 
           index_pre_render
 
-          @#{models_name} = with_eager_includes(@#{models_name})
+          @#{config.models_name} = with_eager_includes(@#{config.models_name})
           #{ordinal_clause}
-          @unpaginated_#{models_name} = @#{models_name}
-          @#{models_name} = index_paginate(@#{models_name})
+          @unpaginated_#{config.models_name} = @#{config.models_name}
+          @#{config.models_name} = index_paginate(@#{config.models_name})
 
           if request.xhr?
             render index_xhr_view_template, layout: false
