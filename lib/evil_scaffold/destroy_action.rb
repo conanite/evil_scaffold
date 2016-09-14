@@ -1,11 +1,20 @@
 module EvilScaffold
+  class Configuration
+    attr_accessor :avoid_after_delete
+  end
+
   DestroyAction = EvilScaffold.add_generator do
-    def self.prepare config ; end
+    def self.prepare config
+      name                      = config.klass.name
+      show_path                 = name.underscore.sub(/_controller$/, '').gsub("/", "_").singularize
+      config.avoid_after_delete = show_path
+    end
+
     def self.install config
       return unless config.for? :destroy
 
       avoidance_clause = <<AVOIDANCE
-        wrong_url = #{config.path_to_avoid_after_delete}_path(@#{config.model_name})
+        wrong_url = #{config.avoid_after_delete}_path(@#{config.model_name})
         if params[:return_to] == wrong_url
           redirect_to action: :index
         else
@@ -13,7 +22,7 @@ module EvilScaffold
         end
 AVOIDANCE
 
-      back_instruction = if config.path_to_avoid_after_delete.present?
+      back_instruction = if config.avoid_after_delete.present?
         avoidance_clause
       else
         "back"
