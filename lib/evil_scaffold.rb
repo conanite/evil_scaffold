@@ -14,25 +14,31 @@ require 'evil_scaffold/return_appropriately_method'
 require 'evil_scaffold/finder_method'
 
 module EvilScaffold
+  module Configurable
+    attr_accessor :evil_config
+  end
+
   class Configuration
     attr_accessor :klass, :names, :model_name, :models_name, :model_class_name
-    attr_accessor :no_filter, :ordering_scope
+    attr_accessor :no_filter, :ordering_scope, :installed
 
     def for? name
       names.include? name
     end
 
     def install code, file, line
+      self.installed = [installed.to_s, "\n# #{file}:#{line}", code].join("\n")
       klass.class_eval code, file, line
     end
   end
 
   def acts_as_evil target_model, *action_names
-    config                  = Configuration.new
-    config.klass            = self
-    config.names            = Set.new action_names
-    config.model_class_name = target_model.name
-    config.model_name       = config.model_class_name.underscore
+    extend Configurable
+    self.evil_config = config = Configuration.new
+    config.klass              = self
+    config.names              = Set.new action_names
+    config.model_class_name   = target_model.name
+    config.model_name         = config.model_class_name.underscore
     GENERATORS.each { |gen| gen.prepare config }
 
     yield config if block_given?
