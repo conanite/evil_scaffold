@@ -4,12 +4,16 @@ module EvilScaffold
     def self.install config
       return unless config.for? :update
       config.install <<ACTION, __FILE__, (__LINE__ + 1)
+        def sanitise_for_update attrs
+          attrs.permit!
+        end
+
         def ajax_after_update
           render "ajax_update", layout: false
         end
 
         def update
-          if @#{config.model_name}.update_attributes params[:#{config.model_name}].permit!
+          if @#{config.model_name}.update_attributes sanitise_for_update params[:#{config.model_name}]
             if request.xhr?
               ajax_after_update
             else
