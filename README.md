@@ -101,12 +101,22 @@ This will insert somewhere inside your `index` action
 Finally, if you have a really awkward long model class name, you can avoid embarassment using `model_name`:
 
 ```ruby
-acts_as_evil Cms::Post::Comment, :index, :new, :create, :show, :delete, :destroy, :finder, :goto_show do |config|
-  config.model_name = "comment"
+class Cms::Posts::CommentsController
+  acts_as_evil Cms::Post::Comment, :index, :new, :create, :show, :delete, :destroy, :finder, :goto_show do |config|
+    config.model_name = "comment"
+  end
 end
 ```
 
 This will create a variable called `@comment` instead of `@cms_post_comment` which would risk inviting snickering from your colleagues.
+
+If you want to see the generated code, use the #evil class attribute:
+
+```ruby
+> puts Cms::Posts::CommentsController.evil.code
+```
+
+This will spit out all the code that EvilScaffold has generated for you.
 
 ## Contributing
 
