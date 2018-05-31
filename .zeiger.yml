@@ -1,0 +1,28 @@
+search:
+  - "bin/**/*"
+  - "lib/**/*"
+  - "spec/**/*"
+  - "*.gemspec"
+  - ".*.yml"
+  - ".git?*"
+  - "Gemfile*"
+  - README
+ignore:
+  - .doc$
+  - .ods$
+  - .gz$
+  - .png$
+  - .gif$
+  - .zip$
+  - .jpg$
+  - .xcf$
+  - .pdf$
+  - /select2/.*.js$
+stats:
+  nydp:
+    - ".*\\.nydp"
+  code:
+    - "lib/.*\\.(rb|rake)"
+  test:
+    - "spec/.*"
+    - "test/.*"
