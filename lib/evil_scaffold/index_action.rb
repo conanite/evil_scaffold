@@ -10,8 +10,8 @@ module EvilScaffold
     def handle_unique_result results ; false        ; end
     def with_eager_includes results  ; results      ; end
     def index_pre_render             ;                end
-    def index_per_page               ; 20           ; end
-    def index_xhr_view_template      ; "index_ajax" ; end
+    def index_per_page               ; 50           ; end
+    def index_xhr_view_template      ; "index_ajax" ; end unless method_defined?(:index_xhr_view_template)
 
     def index_paginate items
       items.paginate(:per_page => index_per_page, :page => params[:page] || 1)
