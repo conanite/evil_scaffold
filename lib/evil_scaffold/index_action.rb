@@ -11,7 +11,6 @@ module EvilScaffold
     def with_eager_includes results  ; results      ; end
     def index_pre_render             ;                end
     def index_per_page               ; 50           ; end
-    def index_xhr_view_template      ; "index_ajax" ; end unless method_defined?(:index_xhr_view_template)
 
     def index_paginate items
       items.paginate(:per_page => index_per_page, :page => params[:page] || 1)
@@ -45,6 +44,10 @@ ACTION
 
       config.install <<ACTION, __FILE__, __LINE__
         include EvilScaffold::IndexActionHelpers
+
+        def index_xhr_view_template
+          "index_ajax"
+        end unless method_defined?(:index_xhr_view_template)
 
         def index_html
           @#{config.models_name}_count = @#{config.models_name}.size
