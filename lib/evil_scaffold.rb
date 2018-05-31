@@ -15,26 +15,26 @@ require 'evil_scaffold/finder_method'
 
 module EvilScaffold
   module Configurable
-    attr_accessor :evil_config
+    attr_accessor :evil
   end
 
   class Configuration
     attr_accessor :klass, :names, :model_name, :models_name, :model_class_name
-    attr_accessor :no_filter, :ordering_scope, :installed
+    attr_accessor :no_filter, :ordering_scope, :code
 
     def for? name
       names.include? name
     end
 
-    def install code, file, line
-      self.installed = [installed.to_s, "\n# #{file}:#{line}", code].join("\n")
-      klass.class_eval code, file, line
+    def install new_code, file, line
+      self.code = [code.to_s, "\n# #{file}:#{line}", new_code].join("\n")
+      klass.class_eval new_code, file, line
     end
   end
 
   def acts_as_evil target_model, *action_names
     extend Configurable
-    self.evil_config = config = Configuration.new
+    self.evil = config = Configuration.new
     config.klass              = self
     config.names              = Set.new action_names
     config.model_class_name   = target_model.name
