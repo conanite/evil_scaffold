@@ -22,6 +22,10 @@ module EvilScaffold
           after_#{finder}
         end
 
+        def subject
+          @#{config.model_name}
+        end
+
         before_filter :#{finder}, only: #{config.finder_filter_actions.inspect}
 FILTER
     end
