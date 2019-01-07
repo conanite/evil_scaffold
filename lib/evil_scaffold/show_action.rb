@@ -7,6 +7,7 @@ module EvilScaffold
       config.install "def show_xls; end", __FILE__, __LINE__
       config.install "def show_vcf; end", __FILE__, __LINE__
       config.install "def show_pdf; end", __FILE__, __LINE__
+      config.install "def show_zip; end", __FILE__, __LINE__
       config.install <<ACTION, __FILE__, __LINE__
         def show_yaml
           exporter = Protopack::Exporter.new
@@ -21,6 +22,7 @@ module EvilScaffold
             format.vcf  { show_vcf  }
             format.pdf  { show_pdf  }
             format.yaml { show_yaml }
+            format.zip  { show_zip  }
           end
         end
 ACTION
