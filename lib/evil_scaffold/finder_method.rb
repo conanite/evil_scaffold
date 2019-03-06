@@ -1,6 +1,9 @@
 module EvilScaffold
   class Configuration
     attr_accessor :finder_filter_actions
+    def find_for names
+      self.finder_filter_actions += names
+    end
   end
 
   FinderMethod = EvilScaffold.add_generator do

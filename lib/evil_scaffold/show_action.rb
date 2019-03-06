@@ -8,7 +8,7 @@ module EvilScaffold
       config.install "def show_vcf; end", __FILE__, __LINE__
       config.install "def show_pdf; end", __FILE__, __LINE__
       config.install "def show_zip; end", __FILE__, __LINE__
-      config.install <<ACTION, __FILE__, __LINE__
+      config.install <<ACTION, __FILE__, __LINE__ + 1
         def show_yaml
           exporter = Protopack::Exporter.new
           hsh      = exporter.to_package @#{config.model_name}

@@ -26,13 +26,21 @@ module EvilScaffold
       names.include? name
     end
 
+    def as name
+      self.model_name = name
+    end
+
+    def order scope_name
+      self.ordering_scope = scope_name
+    end
+
     def install new_code, file, line
       self.code = [code.to_s, "\n# #{file}:#{line}", new_code].join("\n")
       klass.class_eval new_code, file, line
     end
   end
 
-  def acts_as_evil target_model, *action_names
+  def acts_as_evil target_model, action_names, options={}
     extend Configurable
     self.evil = config = Configuration.new
     config.klass              = self
@@ -41,6 +49,7 @@ module EvilScaffold
     config.model_name         = config.model_class_name.underscore
     GENERATORS.each { |gen| gen.prepare config }
 
+    options.each { |k,v| config.send k, v }
     yield config if block_given?
     config.models_name    ||= config.model_name.pluralize
 

@@ -1,6 +1,9 @@
 module EvilScaffold
   class Configuration
     attr_accessor :avoid_after_delete
+    def delete_avoid name
+      self.avoid_after_delete = name
+    end
   end
 
   DestroyAction = EvilScaffold.add_generator do
