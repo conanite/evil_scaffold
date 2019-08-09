@@ -57,7 +57,7 @@ Both actions will instantiate a variable called `@post`. `new` will instantiate 
 Here is a more complete example:
 
 ```ruby
-acts_as_evil Contact, :index, :index_json, :new, :create, :show, :edit, :update, :delete, :destroy, :finder, :goto_show
+acts_as_evil Contact, :index, :index_json, :new, :create, :show, :edit, :update, :delete, :destroy, :finder
 ```
 
 The variable this time is called `@contact`. `index_json` is called from the `index` action when the requested content-type is `json`. `finder` is not an action but rather a one-line `before_filter` (or `before_action`)
@@ -73,9 +73,7 @@ end
 You can install your finder as a `before_filter` for other actions in the configuration block:
 
 ```ruby
-acts_as_evil Comment, :edit, :update, :delete, :destroy, :finder do |config|
-  config.finder_filter_actions << :approve
-end
+acts_as_evil Comment, :edit, :update, :delete, :destroy, :finder, find_for: %i{ approve }
 ```
 
 This does not create the `approve` action, but includes it in the line
@@ -87,9 +85,7 @@ before_filter :find_comment, only: %i{ edit update delete approve }
 `evil_scaffold` doesn't make any assumptions about the order of items in your `index` action ; it will assign items using the backing store's native ordering. You can control this by telling `acts_as_evil` to call a particular scope definition on your model:
 
 ```ruby
-acts_as_evil Invoice, :index do |config|
-  config.ordering_scope = :order_by_date_desc
-end
+acts_as_evil Invoice, :index, order: :order_by_date_desc
 ```
 
 This will insert somewhere inside your `index` action
@@ -102,13 +98,11 @@ Finally, if you have a really awkward long model class name, you can avoid embar
 
 ```ruby
 class Cms::Posts::CommentsController
-  acts_as_evil Cms::Post::Comment, :index, :new, :create, :show, :delete, :destroy, :finder, :goto_show do |config|
-    config.model_name = "comment"
-  end
+  acts_as_evil Cms::Post::Comment, :index, :new, :create, :show, :delete, :destroy, :finder, as: :comment
 end
 ```
 
-This will create a variable called `@comment` instead of `@cms_post_comment` which would risk inviting snickering from your colleagues.
+This will create a variable called `@comment` instead of `@cms_post_comment`, thus avoiding the risk of inviting snickering from your colleagues.
 
 If you want to see the generated code, use the #evil class attribute:
 
