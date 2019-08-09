@@ -47,11 +47,11 @@ module EvilScaffold
     config.names              = Set.new action_names
     config.model_class_name   = target_model.name
     config.model_name         = config.model_class_name.underscore
-    GENERATORS.each { |gen| gen.prepare config }
+    GENERATORS.each { |gen| gen.prepare config if gen.respond_to?(:prepare) }
 
     options.each { |k,v| config.send k, v }
     yield config if block_given?
-    config.models_name    ||= config.model_name.pluralize
+    config.models_name    ||= config.model_name.to_s.pluralize
 
     GENERATORS.each { |gen| gen.install config }
   end
