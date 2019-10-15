@@ -31,7 +31,7 @@ module EvilScaffold
             format.pdf  { show_pdf  }
             format.yaml { show_yaml }
             format.zip  { show_zip  }
-            format.txt  { show_txt  }
+            format.text { show_txt  }
           end
         end
 ACTION
