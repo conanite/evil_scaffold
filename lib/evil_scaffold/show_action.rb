@@ -15,6 +15,14 @@ module EvilScaffold
           send_data exporter.clean_yaml(hsh), filename: "#{config.model_name}-\#{hsh['id'].gsub(/\s/, '-')}-item.yaml"
         end
 
+        def show_txt
+          if @#{config.model_name}.respond_to? :to_text
+            send_data @#{config.model_name}.to_text
+          else
+            raise NotFound
+          end
+        end
+
         def show
           respond_to do |format|
             format.html { show_html }
@@ -23,6 +31,7 @@ module EvilScaffold
             format.pdf  { show_pdf  }
             format.yaml { show_yaml }
             format.zip  { show_zip  }
+            format.txt  { show_txt  }
           end
         end
 ACTION

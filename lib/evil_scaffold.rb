@@ -14,6 +14,8 @@ require 'evil_scaffold/return_appropriately_method'
 require 'evil_scaffold/finder_method'
 
 module EvilScaffold
+  class NotFound < StandardError ; end
+
   module Configurable
     attr_accessor :evil
   end
