@@ -12,6 +12,7 @@ require 'evil_scaffold/destroy_action'
 require 'evil_scaffold/goto_show_method'
 require 'evil_scaffold/return_appropriately_method'
 require 'evil_scaffold/finder_method'
+require 'evil_scaffold/model_params'
 
 module EvilScaffold
   class NotFound < StandardError ; end
