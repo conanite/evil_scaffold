@@ -25,9 +25,14 @@ module EvilScaffold
           render "ajax_create", layout: false
         end
 
+        # override if you're working with subclasses and you need to pick the right one (eg from params)
+        def get_model_class
+          #{config.model_class_name}
+        end
+
         # this is the #create action
         def create
-          @#{config.model_name} = authorise_creation #{config.model_class_name}.new sanitise_for_create params[:#{config.model_name}]
+          @#{config.model_name} = authorise_creation get_model_class.new sanitise_for_create params[:#{config.model_name}]
           if @#{config.model_name}.save
             if request.xhr?
               ajax_after_create
