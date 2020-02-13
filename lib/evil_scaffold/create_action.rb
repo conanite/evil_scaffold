@@ -1,21 +1,17 @@
 module EvilScaffold
   CreateAction = EvilScaffold.add_generator do
-    def self.prepare config ; end
+    def self.prepare config ; config.names << :params ; end  # this dependency is also expressed in #params
 
     def self.install config
       return unless config.for? :create
       config.install <<ACTION, __FILE__, __LINE__
-        # by default permits all attrs, override if you need to be more selective about your attributes
-        def sanitise_for_create attrs
-          attrs.permit!
-        end
-
         # override this to respond appropriately in case of a validation error
         def create_validation_failure thing
           raise(ActiveRecord::RecordInvalid.new(thing))
         end
 
         # override this and raise an error if thing cannot be created for any reason other than validation error
+        # or return something else that responds to #save if this #thing is not the thing that should be created
         def authorise_creation thing
           thing
         end
@@ -25,14 +21,9 @@ module EvilScaffold
           render "ajax_create", layout: false
         end
 
-        # override if you're working with subclasses and you need to pick the right one (eg from params)
-        def get_model_class
-          #{config.model_class_name}
-        end
-
         # this is the #create action
         def create
-          @#{config.model_name} = authorise_creation get_model_class.new sanitise_for_create params[:#{config.model_name}]
+          @#{config.model_name} = authorise_creation build_new_#{config.model_name}
           if @#{config.model_name}.save
             if request.xhr?
               ajax_after_create
