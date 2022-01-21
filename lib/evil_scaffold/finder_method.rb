@@ -31,7 +31,7 @@ module EvilScaffold
         end
 
         protected :after_#{finder}, :#{finder}, :subject
-        before_filter :#{finder}, only: #{config.finder_filter_actions.inspect}
+        before_action :#{finder}, only: #{config.finder_filter_actions.inspect}
 FILTER
     end
   end

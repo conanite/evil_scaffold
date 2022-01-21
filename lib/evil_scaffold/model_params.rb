@@ -21,7 +21,7 @@ module EvilScaffold
         end
 
         def default_#{config.model_name}_params
-          ActionController::Parameters.new({})
+          ActionController::Parameters.new({}).permit!
         end
 
         def #{config.model_name}_params
