@@ -12,7 +12,7 @@ module EvilScaffold
         def show_yaml
           exporter = Protopack::Exporter.new
           hsh      = exporter.to_package @#{config.model_name}
-          send_data exporter.clean_yaml(hsh), filename: "#{config.model_name}-\#{hsh['id'].gsub(/\s/, '-')}-item.yaml"
+          send_data exporter.clean_yaml(hsh), filename: "#{config.model_name}-\#{(hsh['id'] || '').gsub(/\s/, '-')}-item.yml"
         end
 
         def show_txt
