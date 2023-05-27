@@ -13,7 +13,7 @@ module EvilScaffold
         end
 
         def update
-          if @#{config.model_name}.update_attributes sanitise_for_update params[:#{config.model_name}]
+          if @#{config.model_name}.update sanitise_for_update params[:#{config.model_name}]
             if request.xhr?
               ajax_after_update
             else
