@@ -61,7 +61,7 @@ ACTION
           @#{config.models_name} = index_paginate(@#{config.models_name})
 
           if request.xhr?
-            render index_xhr_view_template, layout: false
+            render index_xhr_view_template
           end
         end
 

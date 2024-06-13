@@ -3,7 +3,7 @@ module EvilScaffold
     def self.prepare config ; end
     def self.install config
       return unless config.for? :show
-      config.install "def show_html; render layout: !request.xhr?; end", __FILE__, __LINE__
+      config.install "def show_html; end", __FILE__, __LINE__
       config.install "def show_xls; end", __FILE__, __LINE__
       config.install "def show_vcf; end", __FILE__, __LINE__
       config.install "def show_pdf; end", __FILE__, __LINE__
